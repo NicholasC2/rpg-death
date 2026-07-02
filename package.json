@@ -1,0 +1,12 @@
+{
+  "name": "rpg-death",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "tsx ."
+  },
+  "devDependencies": {
+    "electron": "^43.0.0",
+    "tsx": "^4.22.5",
+    "typescript": "^6.0.3"
+  }
+}
