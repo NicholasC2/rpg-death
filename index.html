@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+
+      display: flex;
+
+      justify-content: center;
+      align-items: center;
+
+      background: black;
+    }
+
+    #game {
+      aspect-ratio: 8 / 6;
+      display: block;
+      background: black;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="game"></canvas>
+
+  <script>
+    const canvas = document.querySelector("#game");
+
+    const aspectRatio = 8 / 6;
+
+    function update() {
+      const aspectRatioCurrent = document.body.clientWidth / document.body.clientHeight;
+      if(aspectRatioCurrent > aspectRatio) {
+        canvas.style.width = "auto";
+        canvas.style.height = "100%";
+
+      }
+
+      if(aspectRatioCurrent < aspectRatio) {
+        canvas.style.width = "100%";
+        canvas.style.height = "auto";
+
+      }
+
+      if(aspectRatioCurrent === aspectRatio) {
+        canvas.style.width = "100%";
+        canvas.style.height = "100%";
+      }
+
+      requestAnimationFrame(update)
+    }
+
+    update()
+  </script>
+
+  <script src="dist/app.js"></script>
+</body>
+</html>
