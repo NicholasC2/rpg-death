@@ -40,6 +40,7 @@ type Image = {
 export type Object = Rect & Image
 
 export type Tile = Image & {
+    frame: number;
     x: number;
     y: number;
     collideWithPlayer: Boolean;
@@ -74,12 +75,24 @@ export class Level {
             if(!object.texture.complete) continue;
 
             if(!("w" in object && "h" in object)) {
+                const tileWidth = canvas.width / TILES_HORIZONTAL;
+                const tileHeight = canvas.height / TILES_VERTICAL;
+
+                const columns = Math.floor(object.texture.width / tileWidth);
+
+                const sx = (object.frame % columns) * tileWidth;
+                const sy = Math.floor(object.frame / columns) * tileHeight;
+
                 ctx.drawImage(
                     object.texture,
-                    object.x * (canvas.width / TILES_HORIZONTAL),
-                    object.y * (canvas.height / TILES_VERTICAL),
-                    canvas.width / TILES_HORIZONTAL,
-                    canvas.height / TILES_VERTICAL
+                    sx,
+                    sy,
+                    tileWidth,
+                    tileHeight,
+                    object.x * tileWidth,
+                    object.y * tileHeight,
+                    tileWidth,
+                    tileHeight
                 );
 
                 continue;
