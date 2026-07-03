@@ -1,3 +1,16 @@
+export const TILES_HORIZONTAL=8
+export const TILES_VERTICAL=6
+
+export type Game = {
+    player: Player;
+    levels: Level[];
+    currentLevel: number;
+    setLevel(index: number): void;
+    nextLevel(): void;
+    canvas: HTMLCanvasElement;
+    ctx: CanvasRenderingContext2D;
+};
+
 export class Player {
     x: number;
     y: number;
@@ -20,8 +33,16 @@ type Rect = {
     h: number;
 }
 
-export type Object = Rect & {
+type Image = {
     texture?: HTMLImageElement;
+}
+
+export type Object = Rect & Image
+
+export type Tile = Image & {
+    x: number;
+    y: number;
+    collideWithPlayer: Boolean;
 }
 
 export function isColliding(
@@ -37,18 +58,32 @@ export function isColliding(
 }
 
 export class Level {
-    objects: Object[];
+    objects: (Object | Tile)[];
     background?: HTMLImageElement;
+    update?: (ctx: Game) => void;
 
-    constructor(objects: Object[], background?: HTMLImageElement) {
+    constructor(objects: (Object | Tile)[], background?: HTMLImageElement, update?: (ctx: Game) => void) {
         this.objects = objects;
         this.background = background;
+        this.update = update;
     }
 
-    draw(ctx: CanvasRenderingContext2D) {
+    draw(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
         for (const object of this.objects) {
             if(!object.texture) continue;
             if(!object.texture.complete) continue;
+
+            if(!("w" in object && "h" in object)) {
+                ctx.drawImage(
+                    object.texture,
+                    object.x * (canvas.width / TILES_HORIZONTAL),
+                    object.y * (canvas.height / TILES_VERTICAL),
+                    canvas.width / TILES_HORIZONTAL,
+                    canvas.height / TILES_VERTICAL
+                );
+
+                continue;
+            }
 
             ctx.drawImage(
                 object.texture,
