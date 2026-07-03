@@ -168,11 +168,20 @@ dirtEdgeBottom.src = "assets/dirt-edge-bottom.png"
 const dirtEdgeLeft = new Image()
 dirtEdgeLeft.src = "assets/dirt-edge-left.png"
 
+const dirtEdgeRight = new Image()
+dirtEdgeRight.src = "assets/dirt-edge-right.png"
+
 const dirtCornerTopLeft = new Image()
 dirtCornerTopLeft.src = "assets/dirt-corner-top-left.png"
 
 const dirtCornerBottomLeft = new Image()
 dirtCornerBottomLeft.src = "assets/dirt-corner-bottom-left.png"
+
+const dirtCornerTopRight = new Image()
+dirtCornerTopRight.src = "assets/dirt-corner-top-right.png"
+
+const dirtCornerBottomRight = new Image()
+dirtCornerBottomRight.src = "assets/dirt-corner-bottom-right.png"
 
 const lvl1 = new Level([], undefined, (ctx) => {
     if(ctx.player.x >= 760) {
@@ -251,23 +260,16 @@ const lvl2 = new Level([], undefined, (ctx)=>{
 
 for(let y = 0; y < TILES_VERTICAL; y++) {
     for(let x = 0; x < TILES_HORIZONTAL; x++) {
-        if((y < 2 || y > 3) && x <= 0) {
+        if(y == 0 || y == 5 || (x == 0 && (y < 2 || y > 3)) || x == 7) {
             lvl2.objects.push({
                 collideWithPlayer: true,
                 x,
                 y,
                 texture: lava
             })
-
-            if(y > 0 && y < 5) {
-                lvl2.objects.push({
-                    collideWithPlayer: false,
-                    x,
-                    y,
-                    texture: dirtEdgeLeft
-                })
-            }
-        } else {
+        }
+        
+        if(x > 0 && x < 7) {
             if(y > 0 && y < 5) {
                 lvl2.objects.push({
                     collideWithPlayer: false,
@@ -275,17 +277,8 @@ for(let y = 0; y < TILES_VERTICAL; y++) {
                     y,
                     texture: dirt
                 })
-            } else {
-                lvl2.objects.push({
-                    collideWithPlayer: true,
-                    x,
-                    y,
-                    texture: lava
-                })
             }
-        }
 
-        if(x > 0) {
             if(y == 0) {
                 lvl2.objects.push({
                     collideWithPlayer: false,
@@ -303,6 +296,15 @@ for(let y = 0; y < TILES_VERTICAL; y++) {
                     texture: dirtEdgeBottom
                 })
             }
+        }
+
+        if(x == 7 && y > 0 && y < 5) {
+            lvl2.objects.push({
+                collideWithPlayer: false,
+                x,
+                y,
+                texture: dirtEdgeRight
+            })
         }
     }
 }
@@ -324,6 +326,20 @@ lvl2.objects.push({
 lvl2.objects.push({
     collideWithPlayer: false,
     x: 0,
+    y: 1,
+    texture: dirtEdgeLeft
+})
+
+lvl2.objects.push({
+    collideWithPlayer: false,
+    x: 0,
+    y: 4,
+    texture: dirtEdgeLeft
+})
+
+lvl2.objects.push({
+    collideWithPlayer: false,
+    x: 0,
     y: 0,
     texture: dirtCornerTopLeft
 })
@@ -333,6 +349,34 @@ lvl2.objects.push({
     x: 0,
     y: 5,
     texture: dirtCornerBottomLeft
+})
+
+lvl2.objects.push({
+    collideWithPlayer: false,
+    x: 7,
+    y: 0,
+    texture: dirtCornerTopRight
+})
+
+lvl2.objects.push({
+    collideWithPlayer: false,
+    x: 7,
+    y: 5,
+    texture: dirtCornerBottomRight
+})
+
+lvl2.objects.push({
+    collideWithPlayer: false,
+    x: 0,
+    y: 2,
+    texture: dirt
+})
+
+lvl2.objects.push({
+    collideWithPlayer: false,
+    x: 0,
+    y: 3,
+    texture: dirt
 })
 
 startGame([
